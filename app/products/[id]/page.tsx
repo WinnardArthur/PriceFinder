@@ -154,7 +154,7 @@ const ProductDetailsPage = async ({ params }: { params: { id: string } }) => {
                 borderColor="#beffc5"
               />
             </div>
-            <Modal />
+            <Modal productId={params.id} />
           </div>
         </div>
       </div>

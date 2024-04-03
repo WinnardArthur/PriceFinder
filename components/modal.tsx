@@ -1,10 +1,12 @@
 "use client";
 
-import { Dialog, Transition } from "@headlessui/react";
-import Image from "next/image";
 import { FormEvent, Fragment, useState } from "react";
+import Image from "next/image";
 
-const Modal = () => {
+import { subscribeUserForProductUpdates } from "@/actions";
+import { Dialog, Transition } from "@headlessui/react";
+
+const Modal = ({ productId }: { productId: string }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -13,7 +15,9 @@ const Modal = () => {
     e.preventDefault();
 
     setIsLoading(true);
-    // ...
+
+    await subscribeUserForProductUpdates(productId, email);
+
     setIsLoading(false);
     setEmail("");
     setIsOpen(false);

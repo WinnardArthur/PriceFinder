@@ -1,12 +1,17 @@
 "use server";
 
+import { User } from "@/types/index";
+
 import { revalidatePath } from "next/cache";
 
 import Product from "@/lib/models/product.model";
 import { connectToDB } from "@/lib/mongoose";
 import { scrapeAmazonProduct } from "@/lib/scrapper";
 import { getAveragePrice, getHighestPrice, getLowestPrice } from "@/lib/utils";
+import { sendEmail } from "@/lib/mail";
+import { generateEmailBody } from "@/lib/mail/template";
 
+// Scrape and store product from given url
 export async function scrapeAndStoreProduct(productUrl: string) {
   if (!productUrl) return;
 
@@ -50,6 +55,7 @@ export async function scrapeAndStoreProduct(productUrl: string) {
   }
 }
 
+// Fetch product by ID
 export async function getProductById(productId: string) {
   try {
     connectToDB();
@@ -64,6 +70,7 @@ export async function getProductById(productId: string) {
   }
 }
 
+// Fetch all products
 export async function getAllProducts() {
   try {
     connectToDB();
@@ -76,6 +83,7 @@ export async function getAllProducts() {
   }
 }
 
+// Fetch Similar Products
 export async function getSimilarProducts(productId: string) {
   try {
     connectToDB();
@@ -89,6 +97,34 @@ export async function getSimilarProducts(productId: string) {
     }).limit(3);
 
     return similarProducts;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Add
+export async function subscribeUserForProductUpdates(
+  productId: string,
+  userEmail: string
+) {
+  try {
+    const product = await Product.findById(productId);
+
+    if (!product) return;
+
+    const userExists = product.users.some(
+      (user: User) => user.email === userEmail
+    );
+
+    if (!userExists) {
+      product.users.push({ email: userEmail });
+
+      await product.save();
+
+      const emailContent = generateEmailBody(product, "WELCOME");
+
+      await sendEmail(emailContent, [userEmail]);
+    }
   } catch (error) {
     console.log(error);
   }
