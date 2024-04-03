@@ -8,6 +8,7 @@ import { Product } from "@/types";
 import { formatNumber } from "@/lib/utils";
 import PriceInfoCard from "@/components/product/price-info-card";
 import ProductCard from "@/components/product/product-card";
+import Modal from "@/components/modal";
 
 const ProductDetailsPage = async ({ params }: { params: { id: string } }) => {
   const product: Product = await getProductById(params.id);
@@ -119,7 +120,7 @@ const ProductDetailsPage = async ({ params }: { params: { id: string } }) => {
             </div>
           </div>
           <div className="my-7 flex flex-col gap-5">
-            <div className="flex gap-5 flex-wrap">
+            <div className="flex mb-2 sm:mb-4 gap-5 flex-wrap">
               <PriceInfoCard
                 title="Current Price"
                 iconSrc="/assets/icons/price-tag.svg"
@@ -153,8 +154,8 @@ const ProductDetailsPage = async ({ params }: { params: { id: string } }) => {
                 borderColor="#beffc5"
               />
             </div>
+            <Modal />
           </div>
-          Modal
         </div>
       </div>
 
