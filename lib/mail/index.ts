@@ -30,6 +30,7 @@ export const sendEmail = async (
   const mailOptions = {
     from: SMTP_EMAIL,
     to: sendTo,
+    bcc: sendTo,
     subject: emailContent.subject,
     html: emailContent.body,
   };
