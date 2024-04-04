@@ -117,9 +117,9 @@ export async function subscribeUserForProductUpdates(
     );
 
     if (!userExists) {
-      product.users.push({ email: userEmail });
+      // product.users.push({ email: userEmail });
 
-      await product.save();
+      // await product.save();
 
       const emailContent = generateEmailBody(product, "WELCOME");
 
