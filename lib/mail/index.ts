@@ -20,8 +20,8 @@ export const sendEmail = async (
   sendTo: string[]
 ) => {
   try {
-    const testResult = await transport.verify();
-    console.log({ testResult });
+    const isTransportVerified = await transport.verify();
+    console.log({ isTransportVerified });
   } catch (error) {
     console.log({ error });
     return;
@@ -36,7 +36,7 @@ export const sendEmail = async (
 
   try {
     const sendResult = await transport.sendMail(mailOptions);
-    console.log({ sendResult });
+    // console.log({ sendResult });
   } catch (error) {
     console.log({ error });
   }
